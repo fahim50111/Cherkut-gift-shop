@@ -1,13 +1,33 @@
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import AdminLayout from '../admin/components/AdminLayout';
+import AdminDashboard from '../admin/pages/AdminDashboard';
+import AdminProducts from '../admin/pages/AdminProducts';
+import AdminOrders from '../admin/pages/AdminOrders';
+import AdminCustomers from '../admin/pages/AdminCustomers';
+import AdminAnalytics from '../admin/pages/AdminAnalytics';
+import AdminSettings from '../admin/pages/AdminSettings';
+import AdminLogin from '../admin/pages/AdminLogin';
 
-// Simple demo admin redirect / placeholder
 export default function Admin() {
+  // For demo: simple check. In real app use auth context.
+  const isLoggedIn = true; // Change to false to show login
+
+  if (!isLoggedIn) {
+    return <AdminLogin />;
+  }
+
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Panel</h1>
-      <p className="text-gray-500 mb-6">This is a demo. Full admin panel files are available in the source.</p>
-      <a href="/" className="px-6 py-3 bg-red-600 text-white font-semibold rounded-xl">Back to Shop</a>
-    </div>
+    <AdminLayout>
+      <Routes>
+        <Route index element={<AdminDashboard />} />
+        <Route path="products" element={<AdminProducts />} />
+        <Route path="orders" element={<AdminOrders />} />
+        <Route path="customers" element={<AdminCustomers />} />
+        <Route path="analytics" element={<AdminAnalytics />} />
+        <Route path="settings" element={<AdminSettings />} />
+        <Route path="login" element={<AdminLogin />} />
+        <Route path="*" element={<Navigate to="/admin" replace />} />
+      </Routes>
+    </AdminLayout>
   );
 }
